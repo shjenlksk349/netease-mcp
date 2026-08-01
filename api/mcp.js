@@ -5,7 +5,7 @@ export const config = {
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 
-const NETEASE_API = "https://netease-music-8x3oxq801-waku3.vercel.app";
+const NETEASE_API = "https://netease-music-api-git-main-waku3.vercel.app";
 
 const handler = createMcpHandler((server) => {
   server.registerTool(
