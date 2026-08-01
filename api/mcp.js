@@ -1,3 +1,7 @@
+export const config = {
+  runtime: 'edge',
+};
+
 import { createMcpHandler } from "mcp-handler";
 import { z } from "zod";
 
