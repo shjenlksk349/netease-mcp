@@ -8,17 +8,23 @@ import { z } from "zod";
 const NETEASE_API = "https://netease-music-api-git-main-waku3.vercel.app";
 
 const handler = createMcpHandler((server) => {
-  server.registerTool(
+    server.registerTool(
     "search_song",
     {
-      description: "搜索网易云音乐歌曲",
+      description: "搜索网易云音乐歌曲,并生成可点击的App跳转链接",
       inputSchema: z.object({ keyword: z.string().describe("搜索关键词") }),
     },
     async ({ keyword }) => {
       const res = await fetch(`${NETEASE_API}/search?keywords=${encodeURIComponent(keyword)}`);
       const data = await res.json();
+      const songs = data.result?.songs || [];
+      const jumpUrl = `orpheus://search?keyword=${encodeURIComponent(keyword)}`;
+      const songList = songs.slice(0, 5).map(s => `${s.name} - ${s.artists?.[0]?.name || ""}`).join("\n");
       return {
-        content: [{ type: "text", text: JSON.stringify(data.result?.songs || []) }]
+        content: [{
+          type: "text",
+          text: `找到以下歌曲:\n${songList}\n\n点击跳转到网易云音乐搜索: ${jumpUrl}`
+        }]
       };
     }
   );
